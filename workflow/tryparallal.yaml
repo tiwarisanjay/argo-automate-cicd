@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: parallel-
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+spec:
+  entrypoint: hello
+  serviceAccountName: workflow
+  templates:
+  - name: hello
+    steps:
+    - - name: ls
+        template: template-ls
+    - - name: sleep-a
+        template: template-validate
+      - name: sleep-b
+        template: template-plan
+    - - name: delay
+        template: template-delay
+    - - name: sleep
+        template: template-terraform
+  - name: template-ls
+    container:
+      image: alpine
+      command: [ls]
+      args: ["-l"]
+  - name: template-terraform
+    script:
+      image: hashicorp/terraform:latest
+      command:
+      - /bin/sh
+      - -c 
+      - |
+          terraform --version
+          which git
+  - name: template-delay
+    suspend:
+      duration: "60s"
