@@ -12,10 +12,6 @@ spec:
     steps:
     - - name: ls
         template: template-ls
-    - - name: sleep-a
-        template: template-validate
-      - name: sleep-b
-        template: template-plan
     - - name: delay
         template: template-delay
     - - name: sleep
@@ -36,4 +32,4 @@ spec:
           which git
   - name: template-delay
     suspend:
-      duration: "60s"
+      duration: "600s"

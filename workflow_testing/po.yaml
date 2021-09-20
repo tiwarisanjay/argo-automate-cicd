@@ -1,0 +1,185 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    workflows.argoproj.io/node-name: parallel-4dzp5[0].ls
+    workflows.argoproj.io/template: '{"name":"template-ls","inputs":{},"outputs":{},"metadata":{},"container":{"name":"","image":"alpine","command":["ls"],"args":["-l"],"resources":{}}}'
+  creationTimestamp: "2021-09-20T18:15:17Z"
+  labels:
+    workflows.argoproj.io/completed: "true"
+    workflows.argoproj.io/workflow: parallel-4dzp5
+  name: parallel-4dzp5-855207763
+  namespace: workflows
+  ownerReferences:
+  - apiVersion: argoproj.io/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Workflow
+    name: parallel-4dzp5
+    uid: c8c32377-da34-4f74-8300-3aa5bcdb65df
+  resourceVersion: "244226"
+  uid: c25dee4d-393a-41f0-8606-307785e95e15
+spec:
+  containers:
+  - command:
+    - argoexec
+    - wait
+    - --loglevel
+    - info
+    env:
+    - name: ARGO_POD_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    - name: ARGO_CONTAINER_RUNTIME_EXECUTOR
+    - name: GODEBUG
+      value: x509ignoreCN=0
+    - name: ARGO_CONTAINER_NAME
+      value: wait
+    - name: ARGO_INCLUDE_SCRIPT_OUTPUT
+      value: "false"
+    image: argoproj/argoexec:v3.1.11
+    imagePullPolicy: IfNotPresent
+    name: wait
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /argo/podmetadata
+      name: podmetadata
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+      readOnly: true
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-vqm96
+      readOnly: true
+  - args:
+    - -l
+    command:
+    - ls
+    env:
+    - name: ARGO_CONTAINER_NAME
+      value: main
+    - name: ARGO_INCLUDE_SCRIPT_OUTPUT
+      value: "false"
+    image: alpine
+    imagePullPolicy: Always
+    name: main
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-vqm96
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: docker-desktop
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Never
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: workflows
+  serviceAccountName: workflows
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - downwardAPI:
+      defaultMode: 420
+      items:
+      - fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.annotations
+        path: annotations
+    name: podmetadata
+  - hostPath:
+      path: /var/run/docker.sock
+      type: Socket
+    name: docker-sock
+  - name: kube-api-access-vqm96
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-20T18:15:17Z"
+    reason: PodCompleted
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-20T18:15:17Z"
+    reason: PodCompleted
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-20T18:15:17Z"
+    reason: PodCompleted
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-20T18:15:17Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://b253042aa3b89f40edd68fa8af2766c635b437a126d1ad0a26e0ee4616d80dee
+    image: alpine:latest
+    imageID: docker-pullable://alpine@sha256:e1c082e3d3c45cccac829840a25941e679c25d438cc8412c2fa221cf1a824e6a
+    lastState: {}
+    name: main
+    ready: false
+    restartCount: 0
+    started: false
+    state:
+      terminated:
+        containerID: docker://b253042aa3b89f40edd68fa8af2766c635b437a126d1ad0a26e0ee4616d80dee
+        exitCode: 0
+        finishedAt: "2021-09-20T18:15:22Z"
+        reason: Completed
+        startedAt: "2021-09-20T18:15:22Z"
+  - containerID: docker://2ddc80cd292b1575a8042d4332e2ccd1c6cb4c1ffb414f943d7ace471ceb12b1
+    image: argoproj/argoexec:v3.1.11
+    imageID: docker-pullable://argoproj/argoexec@sha256:0493da3b8c87dbc84fece254f46314f9c2f4ae3d9d790f7d6450396e94a06e0c
+    lastState: {}
+    name: wait
+    ready: false
+    restartCount: 0
+    started: false
+    state:
+      terminated:
+        containerID: docker://2ddc80cd292b1575a8042d4332e2ccd1c6cb4c1ffb414f943d7ace471ceb12b1
+        exitCode: 0
+        finishedAt: "2021-09-20T18:15:23Z"
+        reason: Completed
+        startedAt: "2021-09-20T18:15:20Z"
+  hostIP: 192.168.65.4
+  phase: Succeeded
+  podIP: 10.1.2.46
+  podIPs:
+  - ip: 10.1.2.46
+  qosClass: BestEffort
+  startTime: "2021-09-20T18:15:17Z"
